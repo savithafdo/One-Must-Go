@@ -12,13 +12,18 @@
 
 # Import the necessary module(s).
 import json
+import random
 
-
+DATA_FILE = "data.txt"
 
 # This function repeatedly prompts for input until something other than whitespace is entered.
 # See Point 1 of the "Functions in admin.py" section of the assignment brief.
 def input_something(prompt):
-    pass
+    while True:
+        value = input(prompt)
+        if value.strip():
+            return value
+        print("Please enter something (not just spaces).")
 
 
 
