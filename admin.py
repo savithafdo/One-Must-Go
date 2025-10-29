@@ -18,7 +18,7 @@ DATA_FILE = "data.txt"
 
 # This function repeatedly prompts for input until something other than whitespace is entered.
 # See Point 1 of the "Functions in admin.py" section of the assignment brief.
-def input_something(prompt):
+def input_something(prompt: str) -> str:
     while True:
         value = input(prompt)
         if value.strip():
@@ -26,19 +26,26 @@ def input_something(prompt):
         print("Please enter something (not just spaces).")
 
 
-
 # This function repeatedly prompts for input until an integer between 1 and max_value is entered.
 # See Point 2 of the "Functions in admin.py" section of the assignment brief.
-def input_int(prompt, max_value):
-    pass
+def input_int(prompt: str, max_value: int) -> int:
+    while True:
+        raw = input(prompt)
+        try:
+            num = int(raw)
+            if 1 <= num <= max_value:
+                return num
+            print(f"Enter a number between 1 and {max_value}.")
+        except ValueError:
+            print("Please enter a whole number.")
 
 
 
 # This function opens "data.txt" in write mode and writes the data to it in JSON format.
 # See Point 3 of the "Functions in admin.py" section of the assignment brief.
-def save_data(data):
-    pass
-
+def save_data(data: list) -> None:
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 
@@ -46,7 +53,12 @@ def save_data(data):
 # If the file does not exist or does not contain JSON data, set "data" to an empty list instead.
 # This is the only time that the program should need to read anything from the file.
 # See Point 1 of the "Requirements of admin.py" section of the assignment brief.
-
+try:
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+except Exception as e:
+    print(f"[Info] Unable to load existing data: {e}")
+    data = []
 
 
 
