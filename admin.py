@@ -68,13 +68,48 @@ except Exception as e:
 print('Welcome to the "One Must Go" Admin Program.')
 
 while True:
-    print('\nChoose [a]dd, [l]ist, [s]earch, [v]iew, [d]elete or [q]uit.')
-    choice = input('> ').lower()
+    print()
+    print("Choose [a]dd, [l]ist, [s]earch, [v]iew, [d]elete or [q]uit.")
+    raw_choice = input("> ").strip()
+
+    # Allow quick forms: "s term", "v 2", "d 3"
+    parts = raw_choice.split(maxsplit=1)
+    choice = parts[0].lower() if parts else ""
+
         
     if choice == 'a':
         # Add a new category.
         # See Point 3 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        while True:
+            name = input_something("Enter category name: ").strip()
+            if any(c["name"].lower() == name.lower() for c in data):
+                print("A category with that name already exists. Try another.")
+            else:
+                break
+
+        # Options: 2–5 unique names; allow 'x' to finish after at least 2
+        options = []
+        count = 1
+        while True:
+            upto = f"Enter option {count} "
+            tail = '("x" to end): ' if count >= 3 else "(need at least 2): "
+            opt = input_something(upto + tail).strip()
+            if opt.lower() == "x" and len(options) >= 2:
+                break
+            if any(o["name"].lower() == opt.lower() for o in options):
+                print("That option is already in this category. Use a different name.")
+                continue
+            options.append({"name": opt, "votes": 0})
+            count += 1
+            if len(options) == 5:
+                print("Maximum of 5 options reached.")
+                break
+
+        new_cat = {"name": name, "options": options}
+        data.append(new_cat)
+        save_data(data)
+        print(f'Category added: "{name}" with {len(options)} option(s).')
+
 
 
     
