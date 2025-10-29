@@ -155,25 +155,56 @@ while True:
     elif choice == 'v':
         # View a category.
         # See Point 6 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        if not data:
+            print("No categories saved.")
+            continue
+        if len(parts) == 2 and parts[1].isdigit():
+            index_one_based = int(parts[1])
+        else:
+            index_one_based = input_int("Enter category number to view: ", len(data))
+        i = index_one_based - 1
+        cat = data[i]
+        print()
+        print(cat["name"])
+        if all(o["votes"] == 0 for o in cat["options"]):
+            print("No votes recorded")
+        else:
+            # Show options ordered by votes (display only; do not mutate stored order)
+            ordered = sorted(cat["options"], key=lambda o: o["votes"], reverse=True)
+            total = sum(o["votes"] for o in ordered) or 1
+            for opt in ordered:
+                pct = f' ({round(opt["votes"] * 100 / total)}%)' if total else ""
+                print(f'  - {opt["name"]}: {opt["votes"]} vote(s){pct}')
+
 
 
 
     elif choice == 'd':
         # Delete a category.
         # See Point 7 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        if not data:
+            print("No categories saved.")
+            continue
+        if len(parts) == 2 and parts[1].isdigit():
+            index_one_based = int(parts[1])
+        else:
+            index_one_based = input_int("Enter category number to delete: ", len(data))
+        i = index_one_based - 1
+        removed = data.pop(i)
+        save_data(data)
+        print(f'Category deleted: "{removed["name"]}".')
 
 
 
     elif choice == 'q':
         # Quit the program.
         # See Point 8 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        print('Goodbye! Thank you for using the "One Must Go" admin program.')
+        break
 
 
 
     else:
         # Print "invalid choice" message.
         # See Point 9 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        print("Invalid choice.")
