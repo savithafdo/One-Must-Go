@@ -116,14 +116,39 @@ while True:
     elif choice == 'l':
         # List the current categories.
         # See Point 4 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        if not data:
+            print("No categories saved.")
+        else:
+            print("List of categories:")
+            for i, cat in enumerate(data, start=1):
+                total_votes = sum(o["votes"] for o in cat.get("options", []))
+                print(f'{i}) {cat["name"]} ({len(cat["options"])} options, {total_votes} votes)')
+
 
 
 
     elif choice == 's':
         # Search the current categories.
         # See Point 5 of the "Requirements of admin.py" section of the assignment brief.
-        pass
+        if not data:
+            print("No categories saved.")
+            continue
+        term = parts[1] if len(parts) == 2 and parts[1].strip() else input_something("Enter search term: ")
+        t = term.lower()
+        results = []
+        for idx, cat in enumerate(data, start=1):
+            name_hit = t in cat["name"].lower()
+            options_hit = any(t in opt["name"].lower() for opt in cat["options"])
+            if name_hit or options_hit:
+                total_votes = sum(o["votes"] for o in cat["options"])
+                results.append((idx, cat["name"], len(cat["options"]), total_votes))
+        if not results:
+            print("No results found.")
+        else:
+            print("Search results:")
+            for idx, name, nopts, tvotes in results:
+                print(f"{idx}) {name} ({nopts} options, {tvotes} votes)")
+
 
 
 
