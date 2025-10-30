@@ -2,18 +2,56 @@
   {
     "name": "Marvel Heroes",
     "options": [
-      {"name": "Captain America", "votes": 3},
-      {"name": "Thor", "votes": 2},
-      {"name": "Ironman", "votes": 1},
-      {"name": "Hulk", "votes": 2}
+      {
+        "name": "Captain America",
+        "votes": 3
+      },
+      {
+        "name": "Thor",
+        "votes": 3
+      },
+      {
+        "name": "Ironman",
+        "votes": 1
+      },
+      {
+        "name": "Hulk",
+        "votes": 3
+      }
     ]
   },
   {
     "name": "Fruit",
     "options": [
-      {"name": "Apple", "votes": 0},
-      {"name": "Banana", "votes": 0},
-      {"name": "Orange", "votes": 0}
+      {
+        "name": "Apple",
+        "votes": 0
+      },
+      {
+        "name": "Banana",
+        "votes": 1
+      },
+      {
+        "name": "Orange",
+        "votes": 1
+      }
+    ]
+  },
+  {
+    "name": "Animals",
+    "options": [
+      {
+        "name": "Cat",
+        "votes": 1
+      },
+      {
+        "name": "Dog",
+        "votes": 0
+      },
+      {
+        "name": "Cow",
+        "votes": 0
+      }
     ]
   }
 ]
