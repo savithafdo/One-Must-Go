@@ -16,6 +16,7 @@ import json
 import tkinter as tk
 from tkinter import messagebox
 
+# This is where we store all our game data like categories and votes
 DATA_FILE = "data.txt"
 
 class ProgramGUI:
@@ -41,8 +42,10 @@ class ProgramGUI:
         self.root.geometry("+95+95")
         self.root.resizable(False, False)
 
+        # Keep track of which category we're currently showing
         self.index = 0  # current category
 
+        # Create a nice frame with padding to hold all our stuff
         wrapper = tk.Frame(self.root, padx=16, pady=16)
         wrapper.pack(fill="both", expand=True)
 
@@ -74,7 +77,9 @@ class ProgramGUI:
         for child in list(self.options_frame.children.values()):
             child.destroy()
 
+        # Figure out how wide our buttons should be based on the longest option name
         longest = max((len(o["name"]) for o in cat["options"]), default=0)
+        # Make sure buttons aren't too tiny or too huge
         btn_width = max(12, min(30, longest + 2))  
 
         for opt in cat["options"]:
@@ -101,7 +106,7 @@ class ProgramGUI:
                 opt["votes"] = int(opt.get("votes", 0)) + 1
                 break
 
-        # Save after each category
+        # Save the updated votes to our data file because we don't want to lose any votes
         try:
             with open(DATA_FILE, "w", encoding="utf-8") as f:
                 json.dump(self.data, f, indent=2, ensure_ascii=False)

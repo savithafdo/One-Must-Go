@@ -14,6 +14,7 @@
 import json
 import random
 
+# This is where we store all our game data like categories and votes
 DATA_FILE = "data.txt"
 
 # This function repeatedly prompts for input until something other than whitespace is entered.
@@ -29,10 +30,14 @@ def input_something(prompt: str) -> str:
 # This function repeatedly prompts for input until an integer between 1 and max_value is entered.
 # See Point 2 of the "Functions in admin.py" section of the assignment brief.
 def input_int(prompt: str, max_value: int) -> int:
+    # Keep asking until we get a valid number
     while True:
+        # Get user input as text
         raw = input(prompt)
         try:
+            # Try to convert the text to a number
             num = int(raw)
+            # Check if the number is in the valid range
             if 1 <= num <= max_value:
                 return num
             print(f"Enter a number between 1 and {max_value}.")
@@ -88,19 +93,27 @@ while True:
                 break
 
         # Options: 2–5 unique names; allow 'x' to finish after at least 2
+        # Keep track of all options entered
         options = []
+        # Start counting from option 1
         count = 1
         while True:
+            # Build the prompt showing which option number we're on
             upto = f"Enter option {count} "
+            # After 2 options, user can type 'x' to finish
             tail = '("x" to end): ' if count >= 3 else "(need at least 2): "
             opt = input_something(upto + tail).strip()
+            # Let user finish if they typed 'x' and we have enough options
             if opt.lower() == "x" and len(options) >= 2:
                 break
+            # Make sure this option name isn't already used
             if any(o["name"].lower() == opt.lower() for o in options):
                 print("That option is already in this category. Use a different name.")
                 continue
+            # Add the new option (starting with 0 votes)
             options.append({"name": opt, "votes": 0})
             count += 1
+            # Don't allow more than 5 options
             if len(options) == 5:
                 print("Maximum of 5 options reached.")
                 break
@@ -133,12 +146,18 @@ while True:
         if not data:
             print("No categories saved.")
             continue
+        # Get search term from command (like 's food') or ask user to type it
         term = parts[1] if len(parts) == 2 and parts[1].strip() else input_something("Enter search term: ")
+        # Convert to lowercase so searching isn't case sensitive
         t = term.lower()
+        # Keep track of what we find
         results = []
         for idx, cat in enumerate(data, start=1):
+            # Check if search term appears in the category name
             name_hit = t in cat["name"].lower()
+            # Check if search term appears in any of the options
             options_hit = any(t in opt["name"].lower() for opt in cat["options"])
+            # If we found a match, save the category's info
             if name_hit or options_hit:
                 total_votes = sum(o["votes"] for o in cat["options"])
                 results.append((idx, cat["name"], len(cat["options"]), total_votes))
