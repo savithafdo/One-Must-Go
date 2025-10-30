@@ -95,9 +95,31 @@ class ProgramGUI:
     def record_vote(self, name):
         # This method records the user's vote and displays appropriate messageboxes.
         # See Point 2 of the "Methods in the GUI class of omg.py" section of the assignment brief.
-        pass
+        cat = self.data[self.index]
+        for opt in cat["options"]:
+            if opt["name"] == name:
+                opt["votes"] = int(opt.get("votes", 0)) + 1
+                break
+
+        # Save after each category
+        try:
+            with open(DATA_FILE, "w", encoding="utf-8") as f:
+                json.dump(self.data, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            messagebox.showerror("Save Error", f"Could not save vote: {e}")
+            return
+
+        messagebox.showinfo("Vote Recorded", "Your vote has been recorded.")
+
+        if self.index >= len(self.data) - 1:
+            messagebox.showinfo("Game Over", "That was the final category. The program will now end.")
+            self.root.destroy()
+        else:
+            self.index += 1
+            self.show_category()
 
 
 
 # Create an object of the ProgramGUI class to begin the program.
-gui = ProgramGUI()
+if __name__ == "__main__":
+    ProgramGUI()
